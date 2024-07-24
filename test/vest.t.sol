@@ -27,7 +27,7 @@ contract vestTest is Test{
         accounts[1]=bene1;
 
         uint256[] memory amounts = new uint256[](2);
-        amounts[0]=10000e4;
+        amounts[0]=10000e7;
         amounts[1] = 2000e18;
 
         timeDeployed = block.timestamp;
@@ -36,16 +36,21 @@ contract vestTest is Test{
         token.mint(address(vest),10000e18);
     }
 
+    /**
+     * This test proves due to rounding error the protocol always reverts on releasing already locked small amounts
+     */
     function testRelease() public{
-        vm.startPrank(bene1);
+        vm.startPrank(bene);
         uint64 warptime =4 * 4 weeks;
 
         vm.warp(warptime);
         vest.release();
         vm.stopPrank();
     }
-
-    function test_checkRounding() public {
+    /**
+     * user can redeem more than he has locked
+     */
+    function test_userCanRedeemMore() public {
         vm.startPrank(bene);
         uint64 warptime = 1000000007 * 4 weeks;
 

@@ -49,6 +49,7 @@ contract Vesting {
         address[] memory accounts,
         uint256[] memory amounts
     ) {
+        // require(cliffMonthDuration < vestingMonthDuration,"Cliff period can't be longer than vesting");
         // timestamp is initialised to the time protocol starts
         startTimestamp = uint64(block.timestamp);
         token = token_;
@@ -73,22 +74,26 @@ contract Vesting {
         // gets amount locked into vesting by user
         Info storage vestingInfo = _vesting[sender];
         // calculates amount to be taken every month till vesting is over
-        uint256 amountByMonth = vestingInfo.locked /
+        uint256 amountByMonth = vestingInfo.locked*1e18 /
             (vestingDuration + cliffDuration);
 
         // amount of money to be released     
         uint256 releaseAmount = ((block.timestamp - startTimestamp) / 4 weeks) *
             amountByMonth -
             vestingInfo.released;
+            
+        releaseAmount /= 1e18;
 
         require(releaseAmount > 0, "not enough release amount.");
 
         // tracks the amount of money released/sent
         vestingInfo.released += releaseAmount;
+        require(vestingInfo.locked > vestingInfo.released,"Mf why do you want to take more than you deserve");
         // sends money to user
         SafeERC20.safeTransfer(IERC20(token), sender, releaseAmount);
 
          checkVar = vestingInfo.released;
+         emit TokenReleased(sender,token,releaseAmount);
     }
 }
 //@audit no emit
