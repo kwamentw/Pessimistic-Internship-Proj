@@ -12,6 +12,9 @@ contract BEPTest is Test{
         bep = new BEP20Token();
     }
 
+    /**
+     * Turns out i was right from the test you can see it reverts but money is still sent
+     */
     function test_send_with_allowance() public {
         vm.startPrank(address(this));
         bool ok = bep.mint(20e8);
@@ -29,5 +32,17 @@ contract BEPTest is Test{
         assertEq(bep.balanceOf(address(0xabc)),17e8);
 
         vm.stopPrank();
+    }
+
+    /**
+     * I was right! tokens can only be minted to owners
+     * In standard implementation its not the same
+     * see that it reverts when we trying to mint to different user
+     * it can be argued as intended design but as compared to the standard its a pitfall 
+     */
+    function test_reverts_mint_notOwner() public {
+        vm.prank(address(45));
+        bool ok = bep.mint(10e8);
+        require(ok);
     }
 }
