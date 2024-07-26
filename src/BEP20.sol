@@ -192,12 +192,17 @@ contract BEP20Token is Context, IBEP20, Ownable {
 
   //@audit no check to make sure sender has some allowance / in this case approve should come on top.. i.e does this mean anybody can initiaite the send but will revert after money has gone
   function transferFrom(address sender, address recipient, uint256 amount) external returns (bool) {
-    // console2.log("bal is: ",balanceOf(sender));
-    // console2.log("bal is: ",balanceOf(recipient));
+    //poc
+    console2.log("bal is: ",balanceOf(sender));
+    console2.log("bal is: ",balanceOf(recipient));
+
     _transfer(sender, recipient, amount);
-    // uint256 bal = balanceOf(recipient);
-    // console2.log("bal is: ",balanceOf(sender));
-    // console2.log("bal is: ",bal);
+
+    //poc
+    uint256 bal = balanceOf(recipient);
+    console2.log("bal is: ",balanceOf(sender));
+    console2.log("bal is: ",bal);
+
     _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
     return true;
   }
