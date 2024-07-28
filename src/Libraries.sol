@@ -10,7 +10,7 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/EnumerableSetUpgradeable.sol";
 
 library Items {
     using Items for ItemId;
@@ -78,4 +78,20 @@ library Placements {
 
 abstract contract ManagerStorage {
     Placements.Registry internal _placementRegistry;
+}
+
+// solution #1 - i.e the contract initializing palcements
+contract PlacementInitializer is ManagerStorage{
+    function resetCounter() internal {
+        _placementRegistry.placementIdTracker = CountersUpgradeable.Counter(0);
+    }
+
+    function register(Placements.Placement memory newPlacement) external returns(uint256 placementId){
+        resetCounter();
+        placementId = Placements.register(_placementRegistry,newPlacement);
+    }
+
+    function viewPlacement(uint256 placementId) external view returns(Placements.Placement memory record){
+        record = _placementRegistry.placements[placementId];
+    }
 }
