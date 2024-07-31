@@ -130,3 +130,16 @@ contract PlacementInitializer is ManagerStorage{
  * and it is valid to use in the same library when you declare the intent just like on line 16
  * So the Purpose of line 16 is to facilitate the use of `ItemId` in `Item`
  */
+
+// solution #4 - How is the placement fee deducted? Who is it paid from and to whom? How are msg.sender and address(this) changed with each external call?
+/**
+ * The placement fee is deducted by transferring the placement fee amount of itemtoken from msg.sender to address this 
+ * (on line 36) as we can see from the deposit function
+ * the Msg.sender pays to this address
+ * msg.sender - caller of the function in the contract using the library
+ * address(this) - the contract address that makes use of this library
+ * msg.sender changes when a different user calls the function in the contract using this library
+ * or can change when a contract inherits the abstract contract
+ * address(this) changes when different contract inherits the abstract contract ManagerStorage
+ * or when a different contract uses the library
+ */
