@@ -35,4 +35,6 @@ contract Airdrop {
 
         emit Claim(msg.sender, amount);
     }
+
+    // solution #1
 }
