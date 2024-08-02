@@ -37,4 +37,13 @@ contract Airdrop {
     }
 
     // solution #1
+    /**
+     * balanceOf(msg.sender) == 0 is not a very effective check on double claiming
+     * because a user can take the airdrop and then send it to another account
+     * That makes him eligible for another airdrop
+     * in this the solution will be;
+     * to create a mapping to store the address of all those who have claimed
+     * and have a check on the mapping in the claim function
+     * to see whether the address calling has already claimed 
+     */
 }
