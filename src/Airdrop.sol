@@ -20,6 +20,8 @@ contract Airdrop {
 
     IERC20 private _erc20;
 
+    // mapping (address user => bool claimed) hasClaimed;
+
     event Claim(address indexed who, uint256 amount);
 
     constructor(IERC20 erc20, bytes32 merkleTreeRoot) {
@@ -28,19 +30,21 @@ contract Airdrop {
     }
 
     function claim(uint256 amount, bytes32[] calldata proof) external {
+        // require(!hasClaimed[msg.sender], "Caller has already claimed");
         require(_erc20.balanceOf(msg.sender) == 0);
         require(proof.verify(_merkleTreeRoot, keccak256(abi.encode(msg.sender))), "User was not found");
         
         _erc20.safeTransfer(msg.sender, amount);
+        // hasClaimed[msg.sender]=true;
 
         emit Claim(msg.sender, amount);
     }
 
     // solution #1
     /**
-     * balanceOf(msg.sender) == 0 is not a very effective check on double claiming
-     * because a user can take the airdrop and then send it to another account
-     * That makes him eligible for another airdrop
+     * balanceOf(msg.sender) == 0 is not a very effective check, this check can be bypassed by;
+     * caller can claim the airdrop and then send it to another account bypassing the check
+     * This contract does not protect against double claiming 
      * in this the solution will be;
      * to create a mapping to store the address of all those who have claimed
      * and have a check on the mapping in the claim function
