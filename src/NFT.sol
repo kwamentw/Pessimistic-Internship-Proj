@@ -9,6 +9,7 @@
 pragma solidity ^0.8.2;
 
 //Question? = how can i get these imports to work
+//day2 of still probing how to sort this error
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
