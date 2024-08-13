@@ -378,11 +378,11 @@ contract Nft is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, AccessCont
 }
 
 /**
- * THE MAIN OBJECTIVE OF THIS ONE WAS TO FIGURE OUT HOW TO RUNE SLITHER ON A REPO
- * I HAVE DONE EVEN THOUGH THE RESULTS ARE NOT WHAT WE EXPECT
+ * THE MAIN OBJECTIVE OF THIS TASK WAS TO FIGURE OUT HOW TO RUN SLITHER ON A REPO
+ * I HAVE DONE THAT EVEN THOUGH THE RESULTS ARE NOT WHAT WE EXPECT
  * THIS IS DUE TO THE DEPENDENCIES CONFLICT I AM HAVING 
- * THIS IS BECAUSE THIS REPO WAS USING OLD VERSIONS OF CONTRACTS AND I CAN'T FIND THE EXACT VERSION
- * so i was able to run but a ton of dependecy errors, here's the output
+ * THIS IS BECAUSE THIS REPO WAS USING OLD VERSIONS OF CONTRACTS AND I CAN'T FIND THE EXACT VERSION TO INSTALL
+ * so i was able to run slither but a ton of dependecy errors, here's the output
  */
 
 // python3 -m slither . --solc-disable-warnings --exclude-informational
@@ -452,3 +452,5 @@ contract Nft is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, AccessCont
 // stderr: 227 |         super._beforeTokenTransfer(_from, _to, _tokenId, batchSize);
 // stderr:     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // ERROR:Slither:Unable to compile all targets.
+
+// SO YOU CAN SEE SLITHER STILL WORKS
