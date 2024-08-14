@@ -8,9 +8,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.2;
 
-//Question? = how can i get these imports to work
-//day2 of still probing how to sort this error
-
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -379,3 +376,79 @@ contract Nft is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, AccessCont
         setRoyalties(0, payable(royaltyAddress), uint96(royaltyBase));
     }
 }
+
+/**
+ * THE MAIN OBJECTIVE OF THIS ONE WAS TO FIGURE OUT HOW TO RUNE SLITHER ON A REPO
+ * I HAVE DONE EVEN THOUGH THE RESULTS ARE NOT WHAT WE EXPECT
+ * THIS IS DUE TO THE DEPENDENCIES CONFLICT I AM HAVING 
+ * THIS IS BECAUSE THIS REPO WAS USING OLD VERSIONS OF CONTRACTS AND I CAN'T FIND THE EXACT VERSION
+ * so i was able to run but a ton of dependecy errors, here's the output
+ */
+
+// python3 -m slither . --solc-disable-warnings --exclude-informational
+// 'forge clean' running (wd: /home/fourb/Documents/Pessimistic)
+// 'forge config --json' running
+// 'forge build --build-info --skip */test/** */script/** --force' running (wd: /home/fourb/Documents/Pessimistic)
+// 'forge' returned non-zero exit code 1
+// Compiling 34 files with Solc 0.8.26
+// stdout: Solc 0.8.26 finished in 211.53ms
+// Error: 
+// stderr: Compiler run failed:
+// stderr: Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.26;"
+// stderr: --> src/Transfer.sol
+// stderr: 
+// stderr: Error (7792): Function has override specified but does not override anything.
+// stderr:    --> src/NFT.sol:225:9:
+// stderr:     |
+// stderr: 225 |         override(ERC721, ERC721Enumerable)
+// stderr:     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// stderr: 
+// stderr: Error (2353): Invalid contracts specified in override list: "ERC721" and "ERC721Enumerable".
+// stderr:    --> src/NFT.sol:225:9:
+// stderr:     |
+// stderr: 225 |         override(ERC721, ERC721Enumerable)
+// stderr:     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// stderr: Note: This contract: 
+// stderr:   --> lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol:19:1:
+// stderr:    |
+// stderr: 19 | contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
+// stderr:    | ^ (Relevant source part starts here and spans across multiple lines).
+// stderr: Note: This contract: 
+// stderr:   --> lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Enumerable.sol:14:1:
+// stderr:    |
+// stderr: 14 | abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
+// stderr:    | ^ (Relevant source part starts here and spans across multiple lines).
+// stderr: 
+// stderr: Error (2353): Invalid contract specified in override list: "ERC721URIStorage".
+// stderr:    --> src/NFT.sol:248:9:
+// stderr:     |
+// stderr: 248 |         override(ERC721, ERC721Enumerable, ERC721URIStorage, AccessControl, ERC2981Base)
+// stderr:     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// stderr: Note: This contract: 
+// stderr:   --> lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721URIStorage.sol:11:1:
+// stderr:    |
+// stderr: 11 | abstract contract ERC721URIStorage is ERC721 {
+// stderr:    | ^ (Relevant source part starts here and spans across multiple lines).
+// stderr: 
+// stderr: Error (6480): Derived contract must override function "_beforeTokenTransfer". Two or more base classes define function with same name and parameter types.
+// stderr:    --> src/NFT.sol:120:1:
+// stderr:     |
+// stderr: 120 | contract Nft is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, AccessControl, ERC721Burnable, RoyaltiesV2Impl, ERC2981Base  {
+// stderr:     | ^ (Relevant source part starts here and spans across multiple lines).
+// stderr: Note: Definition in "ERC721": 
+// stderr:    --> lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol:432:5:
+// stderr:     |
+// stderr: 432 |     function _beforeTokenTransfer(
+// stderr:     |     ^ (Relevant source part starts here and spans across multiple lines).
+// stderr: Note: Definition in "ERC721Enumerable": 
+// stderr:   --> lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Enumerable.sol:72:5:
+// stderr:    |
+// stderr: 72 |     function _beforeTokenTransfer(
+// stderr:    |     ^ (Relevant source part starts here and spans across multiple lines).
+// stderr: 
+// stderr: Error (6160): Wrong argument count for function call: 4 arguments given but expected 3.
+// stderr:    --> src/NFT.sol:227:9:
+// stderr:     |
+// stderr: 227 |         super._beforeTokenTransfer(_from, _to, _tokenId, batchSize);
+// stderr:     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// ERROR:Slither:Unable to compile all targets.
