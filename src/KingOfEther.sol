@@ -11,10 +11,10 @@ contract KingOfEther{
     event Deposit(uint256 amount);
     event Withdrawed(uint256 amount);
 
-    address winner;
+    address public winner;
     mapping(address user=>uint256 bal) public balances;
     bool EndGame;
-    uint256 startTime;
+    uint256 public startTime;
     uint256 public balance;
 
     constructor() {
@@ -53,18 +53,22 @@ contract KingOfEther{
     }
 
     function withdraw() external {
+        uint256 amountWdrwn;
         if(block.timestamp != startTime + 30 days){
             revert GameNotFinished();
         }
+        if(!EndGame){revert GameNotFinished();}
+        emit Withdrawed(balances[msg.sender]);
         uint256 amount = balances[msg.sender];
         payable(msg.sender).transfer(amount);
+         amountWdrwn += amount;
+        
+        emit Withdrawed(amountWdrwn);
         if(balances[msg.sender] == 0){
             revert notEnough();
         }
-        balance -= amount;
-        balances[msg.sender] -= amount;
-
-        emit Withdrawed(amount);
+        balance -= amountWdrwn;
+        balances[msg.sender] -= amountWdrwn;
     }
 
 }

