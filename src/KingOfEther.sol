@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 
 contract KingOfEther{
     error GameNotFinished();
-    error GameEnded();
+    error GameEndedAlready();
     error notEnough();
 
     event GameEnd(uint256 startTime, uint256 endtime);
@@ -15,12 +15,12 @@ contract KingOfEther{
     mapping(address user=>uint256 bal) public balances;
     bool EndGame;
     uint256 public startTime;
-    uint256 public balance;
+    uint256 public bal;
 
     constructor() {
         EndGame = false;
         startTime = block.timestamp;
-        balance = 1e18;
+        bal = 1e18;
         winner = msg.sender;
     }
 
@@ -28,47 +28,47 @@ contract KingOfEther{
         if (startTime + 30 days != block.timestamp){
             revert GameNotFinished();
         }
+        if(EndGame){revert GameEndedAlready();}
 
         EndGame = true;
+        payable(winner).transfer(address(this).balance);
 
         emit GameEnd(startTime,block.timestamp);
+        emit Withdrawed(address(this).balance);
+        emit Withdrawed(address(winner).balance);
     }
 
     function deposit(uint256 amount) external payable {
         require(msg.value == amount,"youCheat!");
         if(block.timestamp == startTime + 30 days){
-            revert GameEnded();
+            revert GameEndedAlready();
         }
         if(amount == 0){
             revert notEnough();
         }
-        balance += amount;
-        balances[msg.sender] += amount;
+        bal += msg.value;
+        balances[msg.sender] += msg.value;
 
-        if(balances[msg.sender] > balances[winner]){
-            winner = msg.sender;
-        }
+        // if(balances[msg.sender] > balances[winner]){
+        //     winner = msg.sender;
+        // }
 
-        emit Deposit(msg.value);
+        // emit Deposit(msg.value);
     }
 
     function withdraw() external {
-        uint256 amountWdrwn;
-        if(block.timestamp != startTime + 30 days){
-            revert GameNotFinished();
-        }
-        if(!EndGame){revert GameNotFinished();}
-        emit Withdrawed(balances[msg.sender]);
-        uint256 amount = balances[msg.sender];
-        payable(msg.sender).transfer(amount);
-         amountWdrwn += amount;
-        
-        emit Withdrawed(amountWdrwn);
         if(balances[msg.sender] == 0){
             revert notEnough();
         }
-        balance -= amountWdrwn;
-        balances[msg.sender] -= amountWdrwn;
+
+        uint256 amount = balances[msg.sender];
+        (bool ok,)=msg.sender.call{value:amount}("");
+        require(ok);
+
+        bal = 0;
+        balances[msg.sender] = 0;
+
+        emit Withdrawed(balances[msg.sender]);
     }
 
 }
