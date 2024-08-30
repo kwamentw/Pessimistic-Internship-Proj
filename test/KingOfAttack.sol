@@ -4,6 +4,11 @@ pragma solidity 0.8.26;
 import {KingOfEther} from  "../src/KingOfEther.sol";
 import {console2} from "forge-std/console2.sol";
 
+/**
+ * @title King Of Ether Attacker
+ * @author 4b
+ * @notice Attack contract to exploit the reentrancy in KING OF ETHER
+ */
 contract Attacker is KingOfEther{
     KingOfEther _kingOf;
     address public owner;

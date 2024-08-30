@@ -2,6 +2,11 @@
 pragma solidity 0.8.26;
 
 
+/**
+ * @title King Of Ether
+ * @author Kwame 4b
+ * @notice A game in which the winner takes all the ETH after the game is over
+ */
 contract KingOfEther{
     error GameNotFinished();
     error GameEndedAlready();
