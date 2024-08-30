@@ -49,11 +49,11 @@ contract KingOfEther{
         bal += msg.value;
         balances[msg.sender] += msg.value;
 
-        // if(balances[msg.sender] > balances[winner]){
-        //     winner = msg.sender;
-        // }
+        if(balances[msg.sender] > balances[winner]){
+            winner = msg.sender;
+        }
 
-        // emit Deposit(msg.value);
+        emit Deposit(msg.value);
     }
 
     function withdraw() external {

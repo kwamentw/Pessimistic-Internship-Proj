@@ -42,8 +42,8 @@ contract KOEtherTest is Test {
 
     function test_withdrawal() public {
         depositPoint();
-        // vm.warp(K_ether.startTime()+ 30 days);
-        // K_ether.gameFinished();
+        vm.warp(K_ether.startTime()+ 30 days);
+        K_ether.gameFinished();
         vm.prank(address(999));
         K_ether.withdraw();
          console2.log(K_ether.winner(),K_ether.balances(K_ether.winner()));
