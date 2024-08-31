@@ -8,19 +8,31 @@ pragma solidity 0.8.26;
  * @notice A game in which the winner takes all the ETH after the game is over
  */
 contract KingOfEther{
+    //----ERRORS----
     error GameNotFinished();
     error GameEndedAlready();
     error notEnough();
 
+    //----EVENTS----
     event GameEnd(uint256 startTime, uint256 endtime);
     event Deposit(uint256 amount);
     event Withdrawed(uint256 amount);
 
+    //-------------------------------------------------
+
+    // winner of game
     address public winner;
+    // balances of users / participants
     mapping(address user=>uint256 bal) public balances;
+
+    // Whether Game has ended or not
     bool EndGame;
+
+    // time Game starts
     uint256 public startTime;
+    // total balance in the game 
     uint256 public bal;
+    //-------------------------------------------------
 
     constructor() {
         EndGame = false;
@@ -29,6 +41,10 @@ contract KingOfEther{
         winner = msg.sender;
     }
 
+    /**
+     * Called to end game 
+     * Game wont end unless endtime = startTime + 30 days
+     */
     function gameFinished() external {
         if (startTime + 30 days != block.timestamp){
             revert GameNotFinished();
@@ -43,6 +59,10 @@ contract KingOfEther{
         emit Withdrawed(address(winner).balance);
     }
 
+    /**
+     * Call to Deposit eth to play the game
+     * @param amount amount deposited
+     */
     function deposit(uint256 amount) external payable {
         require(msg.value == amount,"youCheat!");
         if(block.timestamp == startTime + 30 days){
@@ -61,6 +81,9 @@ contract KingOfEther{
         emit Deposit(msg.value);
     }
 
+    /**
+     * Call to back out from playing the game 
+     */
     function withdraw() external {
         if(balances[msg.sender] == 0){
             revert notEnough();

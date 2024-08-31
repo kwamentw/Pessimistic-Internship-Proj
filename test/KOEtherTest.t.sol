@@ -6,6 +6,11 @@ import {Attacker} from "./KingOfAttack.sol";
 import {Test} from "forge-std/Test.sol";
 import {console2} from "forge-std/console2.sol";
 
+/**
+ * @title King Of Ether Test
+ * @author 4b
+ * @notice A test file to test all functions
+ */
 contract KOEtherTest is Test {
     KingOfEther K_ether;
     Attacker K_attack;
@@ -15,6 +20,7 @@ contract KOEtherTest is Test {
         K_attack = new Attacker(address(K_ether));
     }
 
+    // Testing attack function to determine whether it works
     function testContract() public {
         vm.deal(msg.sender,20e18);
         depositPoint();
@@ -22,6 +28,7 @@ contract KOEtherTest is Test {
         K_attack.attack{value: 5e18}();
     }
 
+    // Testing normal deposit when playing game
     function depositPoint() public {
         vm.deal(address(999),14e18);
         vm.deal(address(333),18e18);
@@ -40,6 +47,7 @@ contract KOEtherTest is Test {
 
     }
 
+    // Testing players' withdrawal from game
     function test_withdrawal() public {
         depositPoint();
         vm.warp(K_ether.startTime()+ 30 days);
@@ -49,6 +57,7 @@ contract KOEtherTest is Test {
          console2.log(K_ether.winner(),K_ether.balances(K_ether.winner()));
     }
 
+    // Test to see whether game ends
     function test_GameEnd() public {
         depositPoint();
         vm.warp(K_ether.startTime() + 30 days);

