@@ -42,8 +42,11 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
         chainId = _chainId;
     }
 
+    //@audit no onlyOwner modifier
     function _authorizeUpgrade(address newImplementation) internal override {}
 
+    //@audit check whether signer is sender
+    //@audit nonce validation
     function mintTo(
         SignatureData calldata signatureData,
         uint256 tokenId
@@ -56,6 +59,7 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
     }
 
 
+    //@audit same as mint
     function burn(
         uint256 tokenId,
         SignatureData calldata signatureData
