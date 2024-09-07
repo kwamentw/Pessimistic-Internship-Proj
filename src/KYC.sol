@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 // This code snippet is provided by Pessimistic company.
 // To apply for the internship opportunity at Pessimistic company,
 // please fill out the form by visiting the following link: https://forms.gle/SUTcGi8X86yNoFnG7
@@ -46,7 +47,7 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
     function _authorizeUpgrade(address newImplementation) internal override {}
 
     //@audit check whether signer is sender
-    //@audit nonce validation
+    //@audit nonce validation(The nonce is validated with address signer) instead of account as a result the 
     function mintTo(
         SignatureData calldata signatureData,
         uint256 tokenId
@@ -120,5 +121,7 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
 
 /**
  * You need to understand the code and write out all possible issues in the following format: Contract.function L25 - description.
- * 
+ * Token._authorizeUpgrade - Line 46 - No access controls on this function can make anyone upgrade the contract. It needs to have an onlyOwner modifier
+ * Token.signerVerification - line 73 - There is no check that verifies whether msg.sender == signer of message 
+ * Token.signerVerification - line 73 - `nonces[signature.signer]` is verified instead of `nonces[signature.account]` the reason why it is wrong is the signer's nonce is not increased and used in the code but in the signature checker it validates that one instead
  */
