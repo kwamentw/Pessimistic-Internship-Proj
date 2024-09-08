@@ -43,11 +43,8 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
         chainId = _chainId;
     }
 
-    //@audit no onlyOwner modifier
     function _authorizeUpgrade(address newImplementation) internal override {}
 
-    //@audit check whether signer is sender
-    //@audit nonce validation(The nonce is validated with address signer) instead of account as a result the 
     function mintTo(
         SignatureData calldata signatureData,
         uint256 tokenId
@@ -56,11 +53,11 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
        require(balanceOf(signatureData.account) == 0, 'The token has already been minted!');
 
        _mint(signatureData.account, tokenId);
+       //@audit
        nonces[signatureData.account]++;
     }
 
 
-    //@audit same as mint
     function burn(
         uint256 tokenId,
         SignatureData calldata signatureData

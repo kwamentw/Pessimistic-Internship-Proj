@@ -28,7 +28,14 @@ contract Signature {
         v = uint8(v);
         require(v == 27 || v == 28, "Incorrect v value");
         
+        //@audit check the s value to prevent malleability
+        //@audit check whether the signer is the msg.sender
         address signer = ecrecover(hash, v, r, s);
         return signer == signedAddress;
     }
 }
+
+/**
+ * What minimal checks/operations should be added to the code to avoid signature malleability for ecrecover().
+ * 
+ */
