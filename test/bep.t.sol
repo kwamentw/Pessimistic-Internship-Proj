@@ -4,12 +4,15 @@ pragma solidity >0.4.0 <= 0.9.0;
 import {Test} from "forge-std/Test.sol";
 import {console2} from "forge-std/console2.sol";
 import {BEP20Token} from "../src/BEP20.sol";
+import {Signature} from "../src/Signature.sol";
 
 contract BEPTest is Test{
     BEP20Token bep;
+    Signature sign;
 
     function setUp() public {
         bep = new BEP20Token();
+        sign = new Signature(address(45));
     }
 
     /**
