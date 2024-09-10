@@ -119,6 +119,8 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
 /**
  * You need to understand the code and write out all possible issues in the following format: Contract.function L25 - description.
  * Token._authorizeUpgrade - Line 46 - No access controls on this function can make anyone upgrade the contract. It needs to have an onlyOwner modifier
- * Token.signerVerification - line 73 - There is no check that verifies whether msg.sender == signer of message 
- * Token.signerVerification - line 73 - `nonces[signature.signer]` is verified instead of `nonces[signature.account]` the reason why it is wrong is the signer's nonce is not increased and used in the code but in the signature checker it validates that one instead
+ * Token.signerVerification - line 73 - nonce validation doesn't offer any protection since require check will always evaluate to true that it 0==0, so it will always pass
+ * Token.mintTo - line 47 - Before minting there's no check to make sure the tokenId already exists and has an owner
+ * Token.mintTo - line 47 - Because of the require check in the function Account can only be minted one TokenId at a time // feels more like a design decision
+ * Token.burn - line 59 - Before burning there's no check to validate whether the TokenId exists before burning it 
  */
