@@ -53,7 +53,7 @@ contract Token is Initializable, ERC721Upgradeable, AccessControlUpgradeable, UU
        require(balanceOf(signatureData.account) == 0, 'The token has already been minted!');
 
        _mint(signatureData.account, tokenId);
-       //@audit
+
        nonces[signatureData.account]++;
     }
 
