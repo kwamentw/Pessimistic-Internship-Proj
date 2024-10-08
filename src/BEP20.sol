@@ -190,7 +190,7 @@ contract BEP20Token is Context, IBEP20, Ownable {
     return true;
   }
 
-  //@audit no check to make sure sender has some allowance / in this case approve should come on top.. i.e does this mean anybody can initiaite the send but will revert after money has gone
+  //@audit no check to make sure sender has some allowance / in this case approve should come on top.. i.e  anybody can initiaite the send but will revert 
   function transferFrom(address sender, address recipient, uint256 amount) external returns (bool) {
     //poc
     console2.log("bal is: ",balanceOf(sender));

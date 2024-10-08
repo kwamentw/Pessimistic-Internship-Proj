@@ -20,7 +20,7 @@ contract Airdrop {
 
     IERC20 private _erc20;
 
-    // mapping (address user => bool claimed) hasClaimed;
+    //@solution mapping (address user => bool claimed) hasClaimed;
 
     event Claim(address indexed who, uint256 amount);
 
@@ -30,12 +30,12 @@ contract Airdrop {
     }
 
     function claim(uint256 amount, bytes32[] calldata proof) external {
-        // require(!hasClaimed[msg.sender], "Caller has already claimed");
+        //@solution require(!hasClaimed[msg.sender], "Caller has already claimed");
         require(_erc20.balanceOf(msg.sender) == 0);
         require(proof.verify(_merkleTreeRoot, keccak256(abi.encode(msg.sender))), "User was not found");
         
         _erc20.safeTransfer(msg.sender, amount);
-        // hasClaimed[msg.sender]=true;
+        //@solution hasClaimed[msg.sender]=true;
 
         emit Claim(msg.sender, amount);
     }

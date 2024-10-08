@@ -38,7 +38,7 @@ contract PriceGetter {
     }
 }
 
-// solution 1 - add the results of runing the test
+// solution 1 - add the results of running the test
 // Ran 1 test for test/PriceGetter.t.sol:PriceGetterTest
 // [FAIL. Reason: assertion failed: 1000297385383812647497258799903 >= 1100000] test_DaiToWant() (gas: 26731)
 // Traces:
