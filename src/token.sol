@@ -286,7 +286,8 @@ contract ERC20 {
 }
 
 /**
- * SOLUTION
+ * SOLUTION - You need to compare the implementation of ERC20 token with standard and write out the differences.
+ * 
  * It does not have all the optional Functions i.e name,decimals & symbol however it can be overlooked because it is optional
  * Does not have the `totalSupply()` function
  * When transferring tokens this implementation charges 6% commission on the transfer for owner, however this is not part of the ERC20 standard and should not be implemented on this level
